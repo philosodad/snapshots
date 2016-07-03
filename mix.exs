@@ -7,6 +7,8 @@ defmodule Snapshots.Mixfile do
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     test_coverage: [tool: ExCoveralls],
+     preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test],
      deps: deps]
   end
 
@@ -33,7 +35,8 @@ defmodule Snapshots.Mixfile do
       {:env_helper, "~> 0.0.3"},
       {:httpoison, "~> 0.9.0"},
       {:cowboy, "~> 1.0.0"},
-      {:plug, "~> 1.0"}
+      {:plug, "~> 1.0"},
+      {:excoveralls, "~> 0.4", only: :test}
     ]
   end
 end
