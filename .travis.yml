@@ -1,6 +1,13 @@
 language: elixir
 elixir:
-  - 1.2.2
+- 1.2.2
 otp_release:
-  - 18.2.1
+- 18.2.1
 script: MIX_ENV=test mix coveralls.travis
+deploy:
+  provider: heroku
+  api_key:
+    secure: JkkkCo9wE0q/hdm+yxA9BEhWaK9hfVxeDPlxJoiZkJ1eUuL+xhOx2C09Aj3340ws2puXHOWfjsmqeFrGvfTIZ3yQulTjtg+pGZo99R4A4UjlSYo2lSvH7QoizRBS5xCuHCO/P+KKcQFMajoIKiY4vZIh44c16AwwITOEig9Mk1os8E7+1QAqsS5gfXTt1488F6SF64dtawabCSm6LuwHWakq/bCq2tXnjPvUcVs3NjT61Q1ofX22K5Z4YAPLwU+4rohR1y/V0ZFTcfqzsT1YHzblVNqDbqUBSWCtJcJV+AKVXE9WCJ0MZ4ZQvvCLt/de7MDyA9JGANZA2jXJtMvmfRAxNmbfQtIwWtkO28ygk/RwGEANCe4fW5RRwUuMrQfz4V9Ic11q17WFFIrgQlDE1iUO8y1obE8S6WunU2WMc/dzSo2KAEY6rcmODvfOas/rnK9+fJ89x3A1Epzs02gfX6bsbAWYSE7cFPoeE/T2RYfA6FlDM7uhLCF2oL3Rdzv1VRXaWI6BRL+4r1pgBZqNcaKHigAbbqKUjRcWiJXc0GpqgM0u7jWc7Dzq6+tAAsweVpc78NhYjPyhhS86Y0bVCVhIuXAJd72ynVI54p7WMXj+h7BZGliq04tJnZ6VqGNfsMGEfVtIg+ty1fB9hP7mcnZzSnLmw+xF2EZY2367rl8=
+  app: fathomless-falls-16606
+  on:
+    repo: philosodad/snapshots
