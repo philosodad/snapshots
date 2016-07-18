@@ -6,4 +6,5 @@ defmodule Snapshots.Snapshot do
     field :ref_guid, :string
     field :message, :map
   end
+
 end

@@ -10,7 +10,7 @@ defmodule Snapshots.Mixfile do
      test_coverage: [tool: ExCoveralls],
      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test],
      deps: deps,
-     aliases: ["test": ["ecto.create --quiet", "ecto.migrate", "test"]]
+     aliases: ["test": ["ecto.drop", "ecto.create --quiet", "ecto.migrate", "test"]]
    ]
   end
 
