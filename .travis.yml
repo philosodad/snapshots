@@ -3,6 +3,7 @@ elixir:
 - 1.2.2
 otp_release:
 - 18.2.1
+services: postgresql
 script: MIX_ENV=test mix coveralls.travis
 deploy:
   provider: heroku
