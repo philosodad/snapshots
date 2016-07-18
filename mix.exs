@@ -9,7 +9,9 @@ defmodule Snapshots.Mixfile do
      start_permanent: Mix.env == :prod,
      test_coverage: [tool: ExCoveralls],
      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test],
-     deps: deps]
+     deps: deps,
+     aliases: ["test": ["ecto.create --quiet", "ecto.migrate", "test"]]
+   ]
   end
 
   # Configuration for the OTP application
@@ -18,7 +20,7 @@ defmodule Snapshots.Mixfile do
   def application do
     [
       mod: {Snapshots, []},
-      applications: [:logger, :cowboy, :plug, :httpoison]]
+      applications: [:logger, :cowboy, :plug, :httpoison, :postgrex, :ecto]]
   end
 
   # Dependencies can be Hex packages:
@@ -36,6 +38,9 @@ defmodule Snapshots.Mixfile do
       {:httpoison, "~> 0.9.0"},
       {:cowboy, "~> 1.0.0"},
       {:plug, "~> 1.0"},
+      {:postgrex, "~> 0.11.2"},
+      {:ecto, "~> 2.0"},
+      {:poison, "~> 2.2"},
       {:excoveralls, "~> 0.4", only: :test}
     ]
   end
