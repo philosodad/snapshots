@@ -22,6 +22,6 @@ defmodule Snapshots.SnapshotViewTest do
   end
 
   def guid do
-    guid = (:rand.uniform(256) + 256) |> Integer.to_string(16)
+    (:rand.uniform(256) + 256) |> Integer.to_string(16)
   end
 end

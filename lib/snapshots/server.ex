@@ -1,5 +1,4 @@
 defmodule Snapshots.Server do
-  require IEx
   use Plug.Router
   alias Plug.Adapters.Cowboy
   plug :authorize
@@ -11,7 +10,10 @@ defmodule Snapshots.Server do
   end
 
   post "/snapshot" do
-    send_resp(conn, 201, "")
+    headers = conn.req_headers
+    {:ok, body, conn} = Plug.Conn.read_body(conn)
+      
+    send_resp(conn, 201, "snapshot captured")
   end
 
   get "/snapshot/:id" do

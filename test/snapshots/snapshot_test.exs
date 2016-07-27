@@ -15,4 +15,26 @@ defmodule Snapshots.SnapshotTest do
     snap = Snapshots.Repo.get_by!(Snapshot, guid: guid)
     assert snap.message["play"] == "that"
   end
+
+  test "#create returns an error if missing guid header" do
+    {:error, message} = Snapshot.create %{"body" => %{a: "map"}, "x-ref-guid" => "hello"}
+    assert message == "No x-guid header found"
+  end
+
+  test "#create returns an error if missing ref-guid header" do
+    {:error, message} = Snapshot.create %{"x-guid" => "asdfsadfasdf", "body" => %{mana: "mana"}}
+    assert message == "No x-ref-guid header found"
+  end
+
+  test "#create returns an error if missing message params" do
+    {:error, message} = Snapshot.create %{"x-guid" => "adasdfsadf", "x-ref-guid" => "isdfj23[09rukj"}
+    assert message == "No snapshot found"
+  end
+
+  test "#create returns errors for all the missing things" do
+    {:error, message} = Snapshot.create %{}
+    assert message =~ "No snapshot found"
+    assert message =~ "No x-ref-guid header found"
+    assert message =~ "No x-guid header found"
+  end
 end

@@ -4,4 +4,5 @@
 erl_crash.dump
 *.ez
 *.swp
+*.swo
 auth_token.txt

@@ -29,9 +29,7 @@ defmodule SnapshotsTest do
   end
 
   test "/snapshot/:id will retrive a snapshot record in JSON format" do
-    guid = :rand.uniform(1000000000000)
-       |> Kernel.+(1000000000000)
-       |> Integer.to_string(16)
+    guid = new_guid
     json = %{play: "that", funky: "music"}
     %Snapshots.Snapshot{guid: guid, ref_guid: "456", message: json}
     |> Snapshots.Repo.insert
@@ -40,4 +38,21 @@ defmodule SnapshotsTest do
     body = Poison.decode! response.body
     assert body["href"] == "#{Sets.snapshots_url}/snapshot/#{guid}"
   end
+
+  @tag :pending
+  test "post /snapshot will insert a snapshot record" do
+    guid = new_guid
+    Sets.http.post("localhost:#{Sets.port}/snapshot",Poison.encode!(%{body: %{the: "body", of: "the"}, request: "some url"}), %{"Content-Type": "application/json", "Authorization": "anything", "X-GUID": "#{guid}", "X-Ref-Guid": new_guid})
+    {:ok, response} = Sets.http.get("localhost:#{Sets.port}/snapshot/#{guid}", %{"Authorization": "anything"})
+    body = Poison.decode! response.body
+    assert response.status_code == 201
+    assert body["snapshot"] == %{"body" => %{"the" => "body", "of" => "the"}, "request" => "some url"}
+  end
+
+  def new_guid do
+    :rand.uniform(1000000000000)
+    |> Kernel.+(1000000000000)
+    |> Integer.to_string(16)
+  end
+
 end
