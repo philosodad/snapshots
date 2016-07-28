@@ -14,11 +14,6 @@ defmodule SnapshotsTest do
     assert response.body == "No resource found"
   end
 
-  test "server will return 201 for an authorized request" do
-    {:ok, response} = Sets.http.post("localhost:#{Sets.port}/snapshot","", %{"Authorization": "anything"})
-    assert response.status_code == 201
-  end
-
   test "/snapshot/:id will return a 404 if no snapshot found" do
     guid = :rand.uniform(1000000000000)
        |> Kernel.+(1000000000000)
@@ -37,6 +32,12 @@ defmodule SnapshotsTest do
     assert response.status_code == 200
     body = Poison.decode! response.body
     assert body["href"] == "#{Sets.snapshots_url}/snapshot/#{guid}"
+  end
+
+  test "post /snapshot will return 400 on bad request" do
+    guid = new_guid
+    {:ok, response} = Sets.http.post("localhost:#{Sets.port}/snapshot",Poison.encode!(%{body: %{the: "body", of: "the"}, request: "some url"}), %{"Content-Type": "application/json", "Authorization": "anything", "X-Ref-Guid": new_guid})
+    assert response.status_code == 400
   end
 
   @tag :pending

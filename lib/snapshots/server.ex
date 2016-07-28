@@ -10,10 +10,10 @@ defmodule Snapshots.Server do
   end
 
   post "/snapshot" do
-    headers = conn.req_headers
-    {:ok, body, conn} = Plug.Conn.read_body(conn)
-      
-    send_resp(conn, 201, "snapshot captured")
+    case Snapshots.Snapshot.create(%{}) do
+      {:error, message} -> send_resp(conn, 400, message)
+      {:ok, message} -> send_resp(conn, 204, "")
+    end
   end
 
   get "/snapshot/:id" do
