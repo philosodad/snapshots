@@ -40,14 +40,13 @@ defmodule SnapshotsTest do
     assert response.status_code == 400
   end
 
-  @tag :pending
   test "post /snapshot will insert a snapshot record" do
     guid = new_guid
     Sets.http.post("localhost:#{Sets.port}/snapshot",Poison.encode!(%{body: %{the: "body", of: "the"}, request: "some url"}), %{"Content-Type": "application/json", "Authorization": "anything", "X-GUID": "#{guid}", "X-Ref-Guid": new_guid})
     {:ok, response} = Sets.http.get("localhost:#{Sets.port}/snapshot/#{guid}", %{"Authorization": "anything"})
     body = Poison.decode! response.body
-    assert response.status_code == 201
-    assert body["snapshot"] == %{"body" => %{"the" => "body", "of" => "the"}, "request" => "some url"}
+    assert response.status_code == 200
+    assert body == %{"snapshot" => %{"the" => "body", "of" => "the"}, "href" => "#{Sets.snapshots_url}/snapshot/#{guid}"}
   end
 
   def new_guid do

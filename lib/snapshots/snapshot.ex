@@ -19,9 +19,9 @@ defmodule Snapshots.Snapshot do
                             end
                             )
     changes = changeset %Snapshots.Snapshot{}, params
-    case changes.valid? do
-      true -> {:ok, "ok"}
-      false -> {:error, error_from_changeset(changes)}
+    case Snapshots.Repo.insert(changes) do
+      {:ok, _message} -> {:ok, "ok"}
+      {:error, _errors} -> {:error, error_from_changeset(changes)}
     end
   end
 

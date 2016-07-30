@@ -4,16 +4,20 @@ defmodule Snapshots.SnapshotTest do
   alias Snapshots.Snapshot
   doctest Snapshots.Snapshot
 
-  test "creates the new snapshot" do
-    
-    guid = :rand.uniform(1000000000000)
-       |> Kernel.+(1000000000000)
-       |> Integer.to_string(16)
+  test "retrieves a snapshot" do
+    guid = new_guid
     json = %{play: "that", funky: "music"}
     %Snapshot{guid: guid, ref_guid: "456", message: json}
     |> Snapshots.Repo.insert
     snap = Snapshots.Repo.get_by!(Snapshot, guid: guid)
     assert snap.message["play"] == "that"
+  end
+
+  test "#create inserts a snapshot" do
+    guid = new_guid
+    {:ok, _message} = Snapshot.create %{"body" => %{what: "ever"}, "x-guid" => guid, "x-ref-guid" => new_guid}
+    snap = Snapshots.Repo.get_by!(Snapshot, guid: guid)
+    assert snap.message["what"] == "ever"
   end
 
   test "#create returns an error if missing guid header" do
@@ -36,5 +40,11 @@ defmodule Snapshots.SnapshotTest do
     assert message =~ "No snapshot found"
     assert message =~ "No x-ref-guid header found"
     assert message =~ "No x-guid header found"
+  end
+
+  def new_guid do
+    :rand.uniform(1000000000000)
+    |> Kernel.+(1000000000000)
+    |> Integer.to_string(16)
   end
 end
